@@ -9,3 +9,4 @@ drf-spectacular
 
 whitenoise
 gunicorn
+django-filter
