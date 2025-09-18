@@ -16,8 +16,11 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "http://localhost:8000").split(
     ","
 )
+
+# Agregar dominio de Netlify a CORS_ALLOWED_ORIGINS
 CORS_ALLOWED_ORIGINS = os.getenv(
-    "CORS_ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:5173"
+    "CORS_ALLOWED_ORIGINS",
+    "http://localhost:3000,http://localhost:5173,https://hilarious-lokum-3acdf9.netlify.app"
 ).split(",")
 
 # Permite acceso tanto desde localhost/web como desde la red local para desarrollo
