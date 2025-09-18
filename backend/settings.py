@@ -26,10 +26,11 @@ try:
 except Exception:
     local_ip = None
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-]
+
+# Permitir hosts de Railway en producción
+RAILWAY_HOST = os.getenv("RAILWAY_HOST")
+if RAILWAY_HOST and RAILWAY_HOST not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(RAILWAY_HOST)
 if local_ip and local_ip not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(local_ip)
 
@@ -104,26 +105,24 @@ LANGUAGE_CODE = "es"
 USE_TZ = True
 
 
-# # settings.py
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'VngKXrFjuUHMtwwryFxYlWMcUuQXWsjw',
-        'HOST': 'yamanote.proxy.rlwy.net',
-        'PORT': '59338',
+
+# Configuración de base de datos para Railway
+DATABASE_URL = os.getenv("DATABASE_URL")
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
     }
-}
-
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-
-# }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'railway',
+            'USER': 'postgres',
+            'PASSWORD': 'VngKXrFjuUHMtwwryFxYlWMcUuQXWsjw',
+            'HOST': 'yamanote.proxy.rlwy.net',
+            'PORT': '59338',
+        }
+    }
 
 
 STATIC_URL = "/static/"
